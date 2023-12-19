@@ -1,56 +1,34 @@
-import MeetupDetail from "../../components/meetups/MeetupDetail";
+import { Fragment } from 'react';
+import NewMeetupForm from '../../components/meetups/NewMeetupForm';
+import Head from 'next/head';
 
-function MeetupDetails() {
-  return (
-    <MeetupDetail
-      image="https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg"
-      title="First Meetup"
-      address="Some Street 5, Some City"
-      description="This is a first meetup"
-    />
-  );
-}
+function NewMeetupPage() {
+    async function addMeetupHanlder(enteredMeetupData) {
+        const response = await fetch('/api/new-meetup', {
+            method: 'POST',
+            body: JSON.stringify(enteredMeetupData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
 
-export async function getStaticPaths() {
-  return {
-    fallback: false,
-    paths: [
-      {
-        params: {
-          meetupId: 'm1',
-        },
-      },
-      {
-        params: {
-          meetupId: 'm2',
-        },
-      },
-      {
-        params: {
-          meetupId: 'm3',
-        },
-      },
-    ],
-  }
-}
+        const data = await response.json();
 
-export async function getStaticProps(context) {
-
-  const meetupId = context.params.meetupId;
-
-  console.log(meetupId)
-
-  return {
-    props: {
-      MeetupData: {
-        image: 'https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg',
-        id: 'm1',
-        title: 'First Meetup',
-        address: 'Some Street 5, Some City',
-        description: 'This is a first meetup',
-      },
+        console.log(data);
     }
-  }
+
+    return (
+        <Fragment>
+          <Head>
+            <title>Add a new Meetups</title>
+            <meta
+              name="description"
+              content="Add your own meetups and create amazing opportunities."
+            />
+          </Head>
+          <NewMeetupForm onAddMeetup={addMeetupHanlder} />
+        </Fragment>
+      );
 }
 
-export default MeetupDetails;
+export default NewMeetupPage;
