@@ -17,11 +17,24 @@ function HomePage(props) {
 
     console.log(data);
   }
+  async function updateItemsHandler(id) {
+    const response = await fetch('/api/new-items', {
+        method: 'PUT',
+        body: JSON.stringify(id),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+  }
   console.log(props.todolist);
   return (
     <Fragment>
       <TodoListForm onAddItems={addItemsHandler} />
-      <List todolist={props.todolist} />
+      <List todolist={props.todolist} updateId={updateItemsHandler} />
     </Fragment>
   );
 }
