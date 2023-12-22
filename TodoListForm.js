@@ -1,20 +1,16 @@
 import { useRef } from "react";
 import classes from "./TodoListForm.module.css";
-import List from "./Lists";
 
-function TodoListForm() {
+function TodoListForm(props) {
   const todoInputRef = useRef();
-  let arr = [];
   const submitHandler = (event) => {
     event.preventDefault();
     const enteredTodo = todoInputRef.current.value;
-    const id = Math.random().toString();
     const data = {
-        id: id,
-        message: enteredTodo,
+        todo: enteredTodo,
+        status: 'Incomplete',
     }
-    arr.push(data);
-    console.log(arr)
+    props.onAddItems(data);
   };
   return (
     <section>
@@ -34,7 +30,6 @@ function TodoListForm() {
         </form>
       </div>
       <div>
-        <List items={arr} />
       </div>
     </section>
   );
