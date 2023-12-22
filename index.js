@@ -18,23 +18,39 @@ function HomePage(props) {
     console.log(data);
   }
   async function updateItemsHandler(id) {
-    const response = await fetch('/api/new-items', {
-        method: 'PUT',
-        body: JSON.stringify(id),
-        headers: {
-            "Content-Type": "application/json",
-        },
+    const response = await fetch("/api/new-items", {
+      method: "PUT",
+      body: JSON.stringify(id),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();
 
     console.log(data);
   }
-  console.log(props.todolist);
+  async function deleteItemsHandler(id) {
+    const response = await fetch("/api/new-items", {
+      method: "DELETE",
+      body: JSON.stringify(id),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+  }
   return (
     <Fragment>
       <TodoListForm onAddItems={addItemsHandler} />
-      <List todolist={props.todolist} updateId={updateItemsHandler} />
+      <List
+        todolist={props.todolist}
+        updateId={updateItemsHandler}
+        deleteId={deleteItemsHandler}
+      />
     </Fragment>
   );
 }
@@ -54,8 +70,8 @@ export async function getStaticProps() {
   return {
     props: {
       todolist: todolist.map((item) => ({
-          todo: item.todo,
-          id: item._id.toString(),
+        todo: item.todo,
+        id: item._id.toString(),
       })),
     },
     revalidate: 1,
